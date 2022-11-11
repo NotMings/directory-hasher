@@ -58,7 +58,7 @@ char *get_file_sha(char *file_path)
 long int file_numbers = 0;
 void get_dir_sha(const char *base_dir_path)
 {
-    char *dirent_path = (char *)malloc(strlen(base_dir_path));
+    char *dirent_path = (char *)malloc(MAX_DIR_PATH_SIZE);
     char *sha_value;
 
     DIR *dir = NULL;
