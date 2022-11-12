@@ -11,6 +11,8 @@
 #define MAX_DIR_PATH_SIZE 4096
 #define TEMP_FILE_PATH "/tmp/hasher.temp"
 
+long int file_numbers = 0;
+
 char *get_file_sha(char *file_path)
 {
     if (file_path == NULL)
@@ -34,7 +36,7 @@ char *get_file_sha(char *file_path)
 
     while ((bytes = fread(buffer, 1, sizeof(buffer), fp)))
     {
-        SHA256_Update(&sha_ctx, buffer, 1024);
+        SHA256_Update(&sha_ctx, buffer, bytes);
     }
 
     if (ferror(fp))
@@ -57,7 +59,6 @@ char *get_file_sha(char *file_path)
     return result;
 }
 
-long int file_numbers = 0;
 void get_dir_sha(const char *base_dir_path)
 {
     char *dirent_path = (char *)malloc(MAX_DIR_PATH_SIZE);
