@@ -42,7 +42,9 @@ char *get_file_sha(char *file_path)
         printf("read file %s error\n", file_path);
         return "error";
     }
+
     SHA256_Final(digest, &sha_ctx);
+
     fclose(fp);
 
     int i;
@@ -64,7 +66,7 @@ void get_dir_sha(const char *base_dir_path)
     DIR *dir = NULL;
     struct dirent *entry;
     struct stat fileinfo;
-    FILE *fp;
+    FILE *fp = NULL;
 
     if (!(dir = opendir(base_dir_path)))
     {
@@ -89,17 +91,6 @@ void get_dir_sha(const char *base_dir_path)
         }
         else
         {
-            // 处理超大数量文件问题
-            if (file_numbers == 0)
-            {
-                fp = fopen(TEMP_FILE_PATH, "a+");
-                if (fp == NULL)
-                {
-                    printf("temp file create error");
-                    return;
-                }
-            }
-
             file_numbers++;
             sha_value = get_file_sha(dirent_path);
             if (fp == NULL)
@@ -109,16 +100,17 @@ void get_dir_sha(const char *base_dir_path)
 
             if ((sha_value != NULL) && (fp != NULL))
             {
-                fprintf(fp, sha_value);
+                fprintf(fp, "%s", sha_value);
             }
+
+            if (fp != NULL)
+            {
+                fclose(fp);
+            }
+            fp = NULL;
         }
     }
     closedir(dir);
-
-    if (fp != NULL)
-    {
-        fclose(fp);
-    }
 
     return;
 }
