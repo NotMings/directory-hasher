@@ -5,7 +5,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <openssl/sha.h>
-#include <math.h>
 #include <unistd.h>
 
 #define MAX_DIR_PATH_SIZE 4096
@@ -125,7 +124,7 @@ int main(int argc, char const *argv[])
         argv[1] = dir_path;
     }
 
-    printf("the selected dir path is: %s\n", argv[1]);
+    printf("selected dir path is: %s\n", argv[1]);
 
     get_dir_sha(argv[1]);
 
