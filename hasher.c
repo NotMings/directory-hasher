@@ -55,6 +55,7 @@ char *get_file_sha(char *file_path)
         sprintf(result + 2 * i, "%02x", digest[i]);
     }
     result[2 * i] = '\0';
+
     return result;
 }
 
@@ -107,10 +108,14 @@ void get_dir_sha(const char *base_dir_path)
             {
                 fclose(fp);
             }
+
             fp = NULL;
+            free(sha_value);
         }
     }
+
     closedir(dir);
+    free(dirent_path);
 
     return;
 }
@@ -136,6 +141,8 @@ int main(int argc, char const *argv[])
     remove(TEMP_FILE_PATH);
 
     printf("dir hash is: %s\n", sha_value);
+
+    free(sha_value);
 
     return 0;
 }
